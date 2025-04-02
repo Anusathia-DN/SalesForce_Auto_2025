@@ -1,5 +1,7 @@
 package salesforcepageobjects;
 
+import static org.testng.Assert.assertTrue;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
@@ -11,6 +13,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import salesforceutils.ReadConfigFileutils;
+import salesforceutils.WaitUtils;
 
 
 /**
@@ -20,10 +23,16 @@ import salesforceutils.ReadConfigFileutils;
  */
 public class SalesforceHomePage {
 	
+	// WebDriver driver;
+	
+	
 	public  SalesforceHomePage(WebDriver driver) {
 		PageFactory.initElements(driver,this);
 	}
 	
+	SalesForceRandomPage rp;
+	//rp=new SalesForceRandomPage(driver);
+	String savedHref=null;
 	
 	@FindBy(xpath="//div[@id='userNav']")
 	public WebElement Usermenu;
@@ -44,25 +53,48 @@ public class SalesforceHomePage {
 //	}
 	public boolean verifyusername(WebDriver driver) throws FileNotFoundException, IOException 
 	{
-		String expectedusername=ReadConfigFileutils.readfromloginpropertiesfile("usermenu.name");
-	String originalusernamechk=this.Usermenu.getText();
-	if(expectedusername.equalsIgnoreCase(originalusernamechk)) {
-	System.out.println("Name Displayed in Usermenu"+this.Usermenu.getText());
-	return true;
+		rp=new SalesForceRandomPage(driver);
+		String[] expectedusername=ReadConfigFileutils.readfromloginpropertiesfile("usermenu.name").split("");
+		String[] originalusernamechk=this.Usermenu.getText().split("");
+		//String swappedName = (expectedusername[0]).trim();
+		//savedHref=originalusernamechk1;
+		//String originalusernamechk=this.Usermenu.getAttribute("href");
+		//System.out.println("usermenu name:"+savedHref);
+		//rp.homepagetab.click();
+		//loggedusername.replaceFirst("\\.+$", "");
+		//String expectedusername=rp.homefirstandlastname.getText();
+		//System.out.println("homepage name:"+expectedusername.replaceFirst("\\.+$", ""));
+		if((expectedusername[0].trim()).contains(originalusernamechk[0].trim()))
+		{
+			System.out.println("Name Displayed in Usermenu:"+this.Usermenu.getText());
+			return true;
 	}
-	return false;
+			return false;
 	}
 
-	public SDFCSalesforceLoginPage Logoutuser(WebDriver driver) {
+	public boolean Logoutuser(WebDriver driver) throws FileNotFoundException, IOException {
 		// TODO Auto-generated method stub
+		WaitUtils.waitForElement(driver, this.Usermenu);
+		rp=new SalesForceRandomPage(driver);
 		if(this.Usermenu.isDisplayed()) {
 		this.Usermenu.click();
 		this.Logout.click();
+		String orilogoutpage=driver.getCurrentUrl();
+		System.out.println("logout title:"+orilogoutpage);
+		String expectedlogoutpage=ReadConfigFileutils.readfromloginpropertiesfile("logoutpage.url");
+		if(orilogoutpage.equalsIgnoreCase(expectedlogoutpage))
+		{
+			new SDFCSalesforceLoginPage(driver);
+			System.out.println("Login page Displayed");
+			return true;
+			
+		}
 		}
 		else {
 			System.out.println("UserMenu Not Visible");
 		}
-		return new SDFCSalesforceLoginPage(driver);
+		new SDFCSalesforceLoginPage(driver);
+		return false;
 		
 	}
 	//@SuppressWarnings({ "unused", "unlikely-arg-type" })
@@ -71,6 +103,8 @@ public class SalesforceHomePage {
 	public boolean verifyusermenulist(WebDriver driver) throws FileNotFoundException, IOException
 	
 	{
+		
+		rp=new SalesForceRandomPage(driver);
 		boolean verfyusermenulist=true;
 //		if(this.Usermenu.isDisplayed())
 //		{

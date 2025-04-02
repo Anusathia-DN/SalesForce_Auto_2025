@@ -1,5 +1,7 @@
 package salesforcetestcases;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.lang.reflect.Method;
 
 import org.openqa.selenium.WebDriver;
@@ -14,14 +16,30 @@ import org.testng.annotations.BeforeSuite;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 
+import salesforcepageobjects.SDFCCreateAccountPage;
+import salesforcepageobjects.SDFCSalesforceLoginPage;
+import salesforcepageobjects.SalesForceContactPage;
+import salesforcepageobjects.SalesForceCreateOppurtunityPage;
+import salesforcepageobjects.SalesForceLeadsPage;
+import salesforcepageobjects.SalesForceRandomPage;
 import salesforcepageobjects.SalesforceHomePage;
+import salesforcepageobjects.UserMenuSalesforcePage;
 import salesforceutils.ReadConfigFileutils;
 import salesforceutils.ReportsManager;
 
 //Base Setup Method
 //@BeforeClass
 public class BaseTest {
-	
+	// WebDriver driver;
+	public static  WebDriver driver;
+	public static UserMenuSalesforcePage um;
+	public static SDFCSalesforceLoginPage lp;
+	public static SalesforceHomePage hp;
+	public static SDFCCreateAccountPage ca;
+	public static SalesForceCreateOppurtunityPage copp;
+	public static SalesForceLeadsPage leads;
+	public static SalesForceContactPage cp;
+	public static SalesForceRandomPage rp;
 	public static ExtentTest test;
 
 	public static ExtentReports report;
@@ -31,12 +49,23 @@ public class BaseTest {
 //	public String baseUrl=readconfig.getApplicationURL();
 //	public String UserName=readconfig.getUserName();
 //	public String Password=readconfig.getPasswrd();
-	public static  WebDriver driver;
+
 	//public static ExtentReports test;
-	SalesforceHomePage hp;
+	//SalesforceHomePage hp;
 	
 	
-	
+	@BeforeSuite
+	public void SetUp()
+	{
+		report=ReportsManager.getInstance();
+		
+	}
+	@AfterSuite
+	public void teardown()
+	{
+		report.flush();
+		//driver.quit();
+	}
 	
 
 	public static void setdriver(String bName,boolean headless)
@@ -49,29 +78,34 @@ public class BaseTest {
 		return threadlocaldriver.get();
 		
 	}
-//	@BeforeMethod
-//	public  void setupBrowser(Method name)
-//	{
-//		BaseTest.setdriver("chrome", false);
-//		test=report.createTest(name.getName());
-//		threadtest.set(test);
-//	}
-//	@AfterMethod
-//	public void closeBrowser()
-//	{
-//		threadlocaldriver.remove();
-//	}
+	@BeforeMethod
+	public  void setupBrowser(Method name) throws FileNotFoundException, IOException
+	{
+		BaseTest.setdriver("chrome", false);
+		test=report.createTest(name.getName());
+		threadtest.set(test);
+		//driver=BaseTest.getbrowser();
+//		um=new UserMenuSalesforcePage(driver);
+//		hp=new SalesforceHomePage(driver);
+//		lp=new SDFCSalesforceLoginPage(driver);
+//		copp=new SalesForceCreateOppurtunityPage(driver) ;
+//		leads=new SalesForceLeadsPage(driver) ;
+//		cp=new SalesForceContactPage(driver) ;
+//		rp=new SalesForceRandomPage(driver) ;
+//		driver.get(ReadConfigFileutils.readfromloginpropertiesfile("base.url"));
+//		driver.manage().window().maximize();
+	}
+	@AfterMethod
+	public void closeBrowser()
+	{
+		
+		threadlocaldriver.get().quit();
+		threadlocaldriver.remove();
+		driver.quit();
+		
+	}
 
-	@BeforeSuite
-	public void SetUp()
-	{
-		report=ReportsManager.getInstance();
-	}
-	@AfterSuite
-	public static void teardown()
-	{
-		report.flush();
-	}
+	
 	public static WebDriver getBrowserDriver(String br, boolean headless)
 	{
 		 String bName=br.toLowerCase();
@@ -104,12 +138,12 @@ public class BaseTest {
 		//driver.get(baseUrl);
 		return driver;
 	}
-	@AfterSuite
-	public void tearDown()
-	{	
-		report.flush();
-		//driver.quit();
-	}
+//	@AfterSuite
+//	public void tearDown()
+//	{	
+//		report.flush();
+//		//driver.quit();
+//	}
 
 
 }

@@ -24,35 +24,50 @@ import salesforcepageobjects.UserMenuSalesforcePage;
 import salesforceutils.CommonUtils;
 import salesforceutils.ReadConfigFileutils;
 import salesforceutils.WaitUtils;
+
 @Listeners(TestListeners.class)
 public class SalesForceUserMenuTestCase extends BaseTest {
 	
-	WebDriver driver;
-	UserMenuSalesforcePage um;
-	SDFCSalesforceLoginPage lp;
-	SalesforceHomePage hp;
+	//WebDriver driver;
+//	UserMenuSalesforcePage um;
+//	SDFCSalesforceLoginPage lp;
+//	SalesforceHomePage hp;
 	//static String downloadPath = "C:\\Users\\anura_1ckmn7y\\Downloads";
-	@BeforeMethod
-	public void precond() throws FileNotFoundException, IOException 
+//	@BeforeMethod()
+//	public void precond(Method name) throws FileNotFoundException, IOException 
+//	{
+//		//BaseTest.setdriver("chrome", false);
+//		test=report.createTest(name.getName());
+//		threadtest.set(test);
+//		//driver=BaseTest.getBrowserDriver("chrome", false);
+//		driver=BaseTest.getbrowser();
+//		//BaseTest.setdriver("chrome", false);
+//		um=new UserMenuSalesforcePage(driver);
+//		hp=new SalesforceHomePage(driver);
+//		lp=new SDFCSalesforceLoginPage(driver);
+//		driver.get(lp.baseurl(driver));
+//		driver.manage().window().maximize();
+//	}
+//	@AfterMethod
+//	public void postcond() throws FileNotFoundException, IOException 
+//	{
+//		threadlocaldriver.remove();
+//	driver.quit();
+//	
+//	}
+	@Test(enabled=false,priority=1)
+	public void usermenudropdown_TC05(Method name) throws InterruptedException, FileNotFoundException, IOException
 	{
-		driver=BaseTest.getBrowserDriver("chrome", false);
+		test=report.createTest(name.getName());
+		//driver.get(ReadConfigFileutils.readfromloginpropertiesfile("base.url"));
+		driver=BaseTest.getbrowser();
+		//BaseTest.setdriver("chrome", false);
 		um=new UserMenuSalesforcePage(driver);
 		hp=new SalesforceHomePage(driver);
 		lp=new SDFCSalesforceLoginPage(driver);
 		driver.get(lp.baseurl(driver));
 		driver.manage().window().maximize();
-	}
-	@AfterMethod
-	public void postcond() throws FileNotFoundException, IOException 
-	{
-	driver.quit();
-	}
-	@Test(enabled=true,priority=1)
-	public void usermenudropdown_TC05(Method name) throws InterruptedException, FileNotFoundException, IOException
-	{
-
 		
-		test=report.createTest(name.getName());
 		lp.logintosalesforce(driver);
 		WaitUtils.waitForElement(driver, um.usermenu);
 		//Thread.sleep(1000);
@@ -64,10 +79,20 @@ public class SalesForceUserMenuTestCase extends BaseTest {
 		//driver.quit();
 			
 		}
-	@Test(enabled=true,priority=2)
+	@Test(enabled=false,priority=2)
 	private void abouttab_TC05(Method name) throws InterruptedException, FileNotFoundException, IOException 
 	{
 		test=report.createTest(name.getName());
+		//driver=BaseTest.getBrowserDriver("chrome", false);
+		//driver=BaseTest.getbrowser();
+		driver=BaseTest.getbrowser();
+		//BaseTest.setdriver("chrome", false);
+		um=new UserMenuSalesforcePage(driver);
+		hp=new SalesforceHomePage(driver);
+		lp=new SDFCSalesforceLoginPage(driver);
+		driver.get(lp.baseurl(driver));
+		driver.manage().window().maximize();
+		
 		lp.logintosalesforce(driver);
 		WaitUtils.waitForElement(driver, um.usermenu);
 		//Thread.sleep(1000);
@@ -79,13 +104,13 @@ public class SalesForceUserMenuTestCase extends BaseTest {
 	//Click Edit Button	
 		WaitUtils.waitForElement(driver, um.myprofile_edit);
 		um.myprofile_edit.click();
+		
+		
+		um.editprofile(driver);
 		assertTrue(um.verifytabs(driver),"About And Contact Tabs are Displayed");
 		//um.verifyprofilepage(driver);
 		//um.verifyprofileditpagetabs(driver);
 		assertTrue(um.verifyeditpage(driver),"EditProfile Pop-Up is Displayed");
-		
-		um.editprofile(driver);
-		
 		assertTrue(um.verifyaboutlastname(driver),"Lastname Is Updated correctly");
 		WaitUtils.waitForElement(driver,um.postlink);
 		//Thread.sleep(1000);
@@ -134,15 +159,16 @@ public class SalesForceUserMenuTestCase extends BaseTest {
 	@Test(enabled=true,priority=3)
 	public void mysettingoption_TC07(Method name) throws InterruptedException, FileNotFoundException, IOException
 	{
-		test=report.createTest(name.getName());
 		//driver=BaseTest.getBrowserDriver("chrome", false);
-		//driver.get(baseUrl);
-		//um=new UserMenuSalesforcePage(driver);
-		 //Logger logger=Logger.getLogger("salesforce");
-		//driver.get("https://login.salesforce.com");
-		//driver.manage().window().maximize();
-		//String pass = "Diyanila@1925"; // Replace with your actual password
-		//password.sendKeys(pass);
+		//driver=BaseTest.getbrowser();
+		test=report.createTest(name.getName());
+		driver=BaseTest.getbrowser();
+		//BaseTest.setdriver("chrome", false);
+		um=new UserMenuSalesforcePage(driver);
+		hp=new SalesforceHomePage(driver);
+		lp=new SDFCSalesforceLoginPage(driver);
+		driver.get(lp.baseurl(driver));
+		driver.manage().window().maximize();
 		lp.logintosalesforce(driver);
 		WaitUtils.waitForElement(driver, um.usermenu);
 		um.usermenu.click();
@@ -183,14 +209,14 @@ public class SalesForceUserMenuTestCase extends BaseTest {
 		//um.availabletab.click();
 		Select availdropdown = new Select(um.availabletab); 
 		availdropdown.selectByVisibleText("Reports");
-	//Add Available Tabs ana Save	//availdropdown.s
+	//Add Available Tabs and Save	//availdropdown.s
 		um.addbutton.click();
 		//Thread.sleep(1000);
 		um.selectedtabsavebutton.click();
-		assertTrue(um.verifyreporttabadded(driver),"Verified Report Tab In SelectDropDown");
+		assertTrue(um.verifyreporttabadded(driver),"Report Tab Is not available SelectDropDown");
 		//Thread.sleep(1000);
 		//WaitUtils.waitForElement(driver, um.mysettingstoptab);
-		assertTrue(um.verifyreoprtabdisplayed(driver),"Verified Report Tab in SalesForce Page");
+		assertTrue(um.verifyreoprtabdisplayed(driver),"Report Tab not displayed in selected tab ");
 		System.out.println("Report option is selected");
 		
 		
@@ -222,10 +248,19 @@ public class SalesForceUserMenuTestCase extends BaseTest {
 		CommonUtils.capturescreenshots(driver,name.getName());
 				
 		}
-	@Test(priority=4)	
+	@Test(enabled=false,priority=4)	
 	public void developerconsole_TC08(Method name) throws InterruptedException, FileNotFoundException, IOException
 	{
+		//driver=BaseTest.getBrowserDriver("chrome", false);
+		//driver=BaseTest.getbrowser();
 		test=report.createTest(name.getName());
+		driver=BaseTest.getbrowser();
+		//BaseTest.setdriver("chrome", false);
+		um=new UserMenuSalesforcePage(driver);
+		hp=new SalesforceHomePage(driver);
+		lp=new SDFCSalesforceLoginPage(driver);
+		driver.get(lp.baseurl(driver));
+		driver.manage().window().maximize();
 		lp.logintosalesforce(driver);
 		WaitUtils.waitForElement(driver, um.usermenu);
 		um.usermenu.click();
@@ -237,10 +272,19 @@ public class SalesForceUserMenuTestCase extends BaseTest {
 		CommonUtils.capturescreenshots(driver,name.getName());
 	}
 	
-	@Test(priority=5)	
+	@Test(enabled=false,priority=5)	
 	public void logout_TC09(Method name) throws InterruptedException, FileNotFoundException, IOException
 	{
+		//driver=BaseTest.getBrowserDriver("chrome", false);
+		//driver=BaseTest.getbrowser();
 		test=report.createTest(name.getName());
+		driver=BaseTest.getbrowser();
+		//BaseTest.setdriver("chrome", false);
+		um=new UserMenuSalesforcePage(driver);
+		hp=new SalesforceHomePage(driver);
+		lp=new SDFCSalesforceLoginPage(driver);
+		driver.get(lp.baseurl(driver));
+		driver.manage().window().maximize();
 		lp.logintosalesforce(driver);
 		WaitUtils.waitForElement(driver, um.usermenu);
 		um.usermenu.click();

@@ -11,7 +11,7 @@ import java.util.Properties;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 public class SDFCSalesforceLoginPage {
-	WebDriver driver;
+	//WebDriver driver;
 	//public static Logger logger;
 	public SDFCSalesforceLoginPage(WebDriver driver) {
 		Properties p;
@@ -52,11 +52,11 @@ public class SDFCSalesforceLoginPage {
 	@FindBy(id="error")
 	public WebElement errormsg;
 	
-	public String enterusername(String username) throws FileNotFoundException, IOException{
-		this.username.clear();
-		this.username.sendKeys(ReadConfigFileutils.readfromloginpropertiesfile("valid.userName"));
-		return username;
-	}
+//	public String enterusername(String username) throws FileNotFoundException, IOException{
+//		this.username.clear();
+//		this.username.sendKeys(ReadConfigFileutils.readfromloginpropertiesfile("valid.userName"));
+//		return username;
+//	}
 	public String enterpassword(String password) throws FileNotFoundException, IOException {
 		this.password.clear();
 		this.password.sendKeys(ReadConfigFileutils.readfromloginpropertiesfile("valid.password"));
@@ -67,25 +67,31 @@ public class SDFCSalesforceLoginPage {
 	public void clickloginbutton() {
 		this.Loginbutton.click();
 	}
-	public SalesforceHomePage logintosalesforce(WebDriver driver) throws FileNotFoundException, IOException
+	public  void logintosalesforce(WebDriver driver) throws FileNotFoundException, IOException
 	{
 		
-		this.enterusername(ReadConfigFileutils.readfromloginpropertiesfile("valid.userName"));
+		this.username.clear();
+		this.username.sendKeys(ReadConfigFileutils.readfromloginpropertiesfile("valid.userName"));
 		String pass=this.enterpassword(ReadConfigFileutils.readfromloginpropertiesfile("valid.password"));
 		this.enterpassword(pass);
 		this.clickloginbutton();
-		return new SalesforceHomePage(driver);
+		//return new SalesforceHomePage(driver);
 	}
-	public SalesforceHomePage validloginrememberme(WebDriver driver) throws FileNotFoundException, IOException
+//	private void username(String readfromloginpropertiesfile) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+	public void validloginrememberme(WebDriver driver) throws FileNotFoundException, IOException
 	{
 		
-		this.enterusername(ReadConfigFileutils.readfromloginpropertiesfile("valid.userName"));
+		this.username.clear();
+		this.username.sendKeys(ReadConfigFileutils.readfromloginpropertiesfile("valid.userName"));
 		String pass=this.enterpassword(ReadConfigFileutils.readfromloginpropertiesfile("valid.password"));
 		this.enterpassword(pass);
 		//this.clickloginbutton();
-		return new SalesforceHomePage(driver);
+		//return new SalesforceHomePage(driver);
 	}
-	public void invalidloginforgotpass(WebDriver driver) throws FileNotFoundException, IOException
+	public void invalidloginforgotpass(WebDriver driver) 
 	{
 		
 		this.username.sendKeys("123");;
@@ -95,13 +101,14 @@ public class SDFCSalesforceLoginPage {
 		//return new SalesforceHomePage(driver);
 	}
 	
-	public SDFCSalesforceLoginPage invalidlogin(WebDriver driver) throws FileNotFoundException, IOException {
+	public void invalidlogin(WebDriver driver) throws FileNotFoundException, IOException {
 		
-		this.enterusername(ReadConfigFileutils.readfromloginpropertiesfile("valid.userName"));
+		this.username.clear();
+		this.username.sendKeys(ReadConfigFileutils.readfromloginpropertiesfile("valid.userName"));
 		this.password.clear();
 	
 		this.clickloginbutton();
-		return new SDFCSalesforceLoginPage(driver);
+		//return new SDFCSalesforceLoginPage(driver);
 		
 	}
 	

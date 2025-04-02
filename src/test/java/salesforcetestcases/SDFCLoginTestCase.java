@@ -14,6 +14,7 @@ import com.aventstack.extentreports.Status;
 
 import listeners.TestListeners;
 import salesforcepageobjects.SalesforceHomePage;
+import salesforcepageobjects.UserMenuSalesforcePage;
 import salesforcepageobjects.SDFCSalesforceLoginPage;
 
 import salesforceutils.CommonUtils;
@@ -22,20 +23,21 @@ import salesforceutils.WaitUtils;
 
 @Listeners(TestListeners.class)
 public class SDFCLoginTestCase extends BaseTest {
-	WebDriver driver;
-	SDFCSalesforceLoginPage lp;
+	//WebDriver driver;
+	//SDFCSalesforceLoginPage lp;
 	//SalesforceHomePage hp;
 	//UserMenuSalesforcePage um;
 	//public String baseUrl=readconfig.getApplicationURL();
-	@Test(priority=1)
+	@Test(enabled=true,priority=1)
 	public void LoginErrorMessage_TC01(Method name) throws IOException {
 		test=report.createTest(name.getName());
 		//calling from Basetest for Threadlocal which is set in Baseclass
 		
 		  driver=BaseTest.getbrowser();
 		//driver=BaseTest.getBrowserDriver("Chrome", false);
-		lp=new SDFCSalesforceLoginPage(driver);
-		hp=new SalesforceHomePage(driver);
+		   lp=new SDFCSalesforceLoginPage(driver);
+		  //@SuppressWarnings("unused")
+		 hp=new SalesforceHomePage(driver);
 		driver.get(lp.baseurl(driver));
 		driver.manage().window().maximize();
 		threadtest.get().log(Status.INFO, "Failed To Display Login Page");
@@ -47,23 +49,36 @@ public class SDFCLoginTestCase extends BaseTest {
 		CommonUtils.capturescreenshots(driver,name.getName());
 		}
 
-@Test(priority=2)
+@Test(enabled=true,priority=3)
 public void LoginToSalesForce_TC02(Method name) throws InterruptedException, FileNotFoundException, IOException {
 	test=report.createTest(name.getName());
+	driver=BaseTest.getbrowser();
+	//driver=BaseTest.getBrowserDriver("Chrome", false);
+	 lp=new SDFCSalesforceLoginPage(driver);
+	 hp=new SalesforceHomePage(driver);
+	driver.get(lp.baseurl(driver));
+	driver.manage().window().maximize();
 	assertTrue(lp.verifyloginpage(driver),"Login Page Is not Displayed");
+	WaitUtils.waitForElement(driver,lp.username);
 	lp.logintosalesforce(driver);
 	WaitUtils.waitForElement(driver,hp.Usermenu);
 	threadtest.get().log(Status.INFO, "Failed To Display HomePage");
 	assertTrue(lp.verifyhomepage(driver),"HomePage not displayed");
-	lp=hp.Logoutuser(driver);
+	hp.Logoutuser(driver);
 	CommonUtils.capturescreenshots(driver,name.getName());
 	
 	
 }
-@Test(priority=3)
+@Test(enabled=true,priority=2)
 public void CheckRemeberMe_TC03(Method name) throws InterruptedException, FileNotFoundException, IOException
 {
 	test=report.createTest(name.getName());
+	driver=BaseTest.getbrowser();
+	//driver=BaseTest.getBrowserDriver("Chrome", false);
+	 lp=new SDFCSalesforceLoginPage(driver);
+	 hp=new SalesforceHomePage(driver);
+	driver.get(lp.baseurl(driver));
+	driver.manage().window().maximize();
 	WaitUtils.waitForElement(driver, lp.username);
 	lp.validloginrememberme(driver);
 	lp.rememberme.click();
@@ -76,11 +91,17 @@ public void CheckRemeberMe_TC03(Method name) throws InterruptedException, FileNo
 	
 	
 }
-@Test(priority=4)
+@Test(enabled=true,priority=4)
 public void ForgotPassword_TC04A(Method name) throws InterruptedException, FileNotFoundException, IOException 
 {
 	 
 	test=report.createTest(name.getName());
+	driver=BaseTest.getbrowser();
+	//driver=BaseTest.getBrowserDriver("Chrome", false);
+	 lp=new SDFCSalesforceLoginPage(driver);
+	 hp=new SalesforceHomePage(driver);
+	driver.get(lp.baseurl(driver));
+	driver.manage().window().maximize();
 	lp.forgotpasswordlink.click();
 	WaitUtils.waitForElement(driver, lp.forgotpassworduser);
 	lp.forgotpassworduser.sendKeys(lp.forgotpassuser(driver));
@@ -92,19 +113,27 @@ public void ForgotPassword_TC04A(Method name) throws InterruptedException, FileN
 	CommonUtils.capturescreenshots(driver,name.getName());
 	
 }
-@Test(priority=5)
+@Test(enabled=true,priority=5)
 public void ForgotPassword_TC04B(Method name) throws InterruptedException, FileNotFoundException, IOException
 {
 	
 	test=report.createTest(name.getName());
-	WaitUtils.waitForElement(driver, lp.returnloginuser);
-	lp.returnloginuser.click();
+	driver=BaseTest.getbrowser();
+	//driver=BaseTest.getBrowserDriver("Chrome", false);
+	 lp=new SDFCSalesforceLoginPage(driver);
+	 hp=new SalesforceHomePage(driver);
+	driver.get(lp.baseurl(driver));
+	driver.manage().window().maximize();
+	
+	WaitUtils.waitForElement(driver, lp.username);
+	//lp.returnloginuser.click();
+	
 	lp.invalidloginforgotpass(driver);
 	WaitUtils.waitForElement(driver, lp.errormsg);					
 //	//Thread.sleep(1000);
 	assertTrue(lp.verifyinvalidlogerror(driver),"InvalidLogin Error Not Displayed");
 	CommonUtils.capturescreenshots(driver,name.getName());
-	driver.quit();
+	//driver.quit();
 }
 
 }

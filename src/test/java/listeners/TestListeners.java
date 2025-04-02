@@ -10,17 +10,21 @@ public class TestListeners implements ITestListener {
 	
 	public void onTestSuccess(ITestResult result)
 	{
-		BaseTest.test.pass(result.getTestName()+"PASSED");
+		BaseTest.threadtest.get().pass(result.getTestName()+"PASSED");
 			}
 	public void onTestFailure(ITestResult result, String testname)
 	{
-		BaseTest.test.fail(result.getTestName()+"FAILED");
-		BaseTest.test.addScreenCaptureFromPath(salesforceutils.CommonUtils.capturescreenshots(BaseTest.threadlocaldriver.get(),testname));
+		BaseTest.threadtest.get().fail(result.getTestName()+"FAILED");
+		BaseTest.threadtest.get().addScreenCaptureFromPath(salesforceutils.CommonUtils.capturescreenshots(BaseTest.threadlocaldriver.get(),testname));
 	}
 	
 	public void onTestStart(ITestResult result)
 	{
-		BaseTest.report.createTest(result.getName()+"Started");
+		BaseTest.report.createTest(result.getName()+"STARTED");
+	}
+	public void onTestSkipped(ITestResult result)
+	{
+		BaseTest.report.createTest(result.getName()+"SKIPPED");
 	}
 
 }

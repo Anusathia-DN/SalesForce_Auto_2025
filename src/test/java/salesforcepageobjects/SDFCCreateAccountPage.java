@@ -2,10 +2,15 @@ package salesforcepageobjects;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Random;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -17,10 +22,13 @@ import salesforceutils.WaitUtils;
 
 public class SDFCCreateAccountPage {
 	
+	 
 	WebDriver driver;
+	
 	public  SDFCCreateAccountPage(WebDriver driver) {
 		PageFactory.initElements(driver,this);
 	}
+	String capturedUsername = null;
 	
 @FindBy(xpath="//li[@id='Account_Tab']")
  public WebElement accountbutton;
@@ -60,18 +68,46 @@ public WebElement mergeaccfindaccbutton;
 public WebElement mergeaccnametable;
 @FindBy(xpath="//input[@value=' Next ']")
 public WebElement mergeaccnextbutton;
-@FindBy(xpath="//div[@id='stageForm'and@class='pbWizardTitle tertiaryPalette brandTertiaryBgr']")
+@FindBy(xpath="//*[@id=\"stageForm\"]/div/div[1]/h2")
 public WebElement mergeaccstep2;
 @FindBy(xpath="//tr[@id='stageForm'and@class='dataRow even first']")
 public WebElement mergeaccowner1;
 @FindBy(xpath="//tr[@class='dataRow odd']")
 public WebElement mergeaccowner2;
-
+@FindBy(xpath="//*[@id=\"stageForm\"]/div/div[2]/div[1]/div/input[2]")
+public WebElement mergebutton;
+@FindBy(xpath="//*[@id=\"bodyCell\"]/div[3]/div[1]/div/div[2]/table/tbody/tr[2]/th")
+public WebElement mergedname;
+@FindBy(xpath="//a[contains(text(),'Accounts with last activity > 30 days')]")
+public WebElement acclastactivity;
+@FindBy(xpath="//h2[@class='pageDescription']")
+public WebElement unsavedreport;
+@FindBy(xpath="//img[@id=\"ext-gen148\"]")
+public WebElement createddate;
+@FindBy(xpath="//img[@id=\"ext-gen152\"]")
+public WebElement fromdate;
+@FindBy(xpath="//img[@id=\"ext-gen154\"]")
+public WebElement todate;
+@FindBy(xpath="//button[@id=\"ext-gen49\"and@class=\" x-btn-text\"]")
+public WebElement reportsavebutton;
+@FindBy(xpath="//input[@id=\"saveReportDlg_reportNameField\"and@name=\"reportName\"]")
+public WebElement reportname;
+@FindBy(xpath="//input[@id='saveReportDlg_DeveloperName'and@name='reportDevName']")
+public WebElement reportunqname;
+@FindBy(xpath="//table[@id='dlgSaveAndRun']")
+public WebElement saveandrunbutton;
+@FindBy(xpath="//h2[contains(text(),'Report Generation Status:')]")
+public WebElement reportpagedisdetails;
+@FindBy(xpath="//div[@id=\"status\"]")
+public WebElement reportpagestatus;
+@FindBy(xpath="//h1[@class=\"noSecondHeader pageType\"]")
+public WebElement reportpagename;
+//private String randomname;
 public boolean verifyaccountusername(WebDriver driver) throws FileNotFoundException, IOException
 {
-	//String oriaccountuserdisplay=this.accountusernamedisplay.getText();
+	String oriaccountuserdisplay=this.accountusernamedisplay.getText();
 	String expectedaccuserdisp=ReadConfigFileutils.readfromcreateaccountpropertiesfile("account.name");
-	if(expectedaccuserdisp.contains("Anuradha Sathiamurthy")) 
+	if(oriaccountuserdisplay.equalsIgnoreCase(expectedaccuserdisp)) 
 	{
 		return true;
 	}
@@ -83,35 +119,53 @@ public void mergechkboxselect(WebDriver driver)
 	WebElement table = driver.findElement(By.xpath("//table[@class='list']")); // Replace with the table's ID or appropriate locator
 	WebElement Button1 = driver.findElement(By.xpath("//input[@id='cid0']"));
 	WebElement Button2 = driver.findElement(By.xpath("//input[@id='cid1']"));
+	
 	WebElement Button3 = driver.findElement(By.xpath("//input[@id='cid2']"));
-		if(Button1.isSelected())
+	
+		if(Button1.isSelected()&& Button2.isSelected()&& Button3.isDisplayed())
 		{
+			System.out.println("Button172 is selected and Button 3 is displayed");
 			 
-			 if(Button2.isSelected())
-			 {
+//			 if(Button2.isSelected()&& Button3.isDisplayed())
+//			 {
 				 
 				   // Radiobutton(Button3, "RadioButton");
 				 Button3.click();
-			 }
-			 else
-			 {
-				 Button2.click();
-				 if(Button3.isSelected())
-				 {
-					Button3.click(); 
-				 }
-			 }
-		}
-		else
-		{
-			Button1.click();
-			//WebElement Button2 = driver.findElement(By.xpath("//input[@id='cid1']"));
-			 if(Button2.isSelected())
-			 {
 				 this.mergeaccnextbutton.click();
 			 }
-			   // Radiobutton(Button2, "RadioButton");
+		try {
+		if(!Button3.isDisplayed()) {
+			JavascriptExecutor js = (JavascriptExecutor) driver;
+			js.executeScript("arguments[0].click();", this.mergeaccnextbutton);
+			System.out.println("Button172 is selected and Button 3 is notdisplayed");
+			this.mergeaccnextbutton.click();
 		}
+	
+}catch (NoSuchElementException e) {
+	this.mergeaccnextbutton.click();
+}
+//		else {
+//		this.mergeaccnextbutton.click();
+//		}
+//			 else
+//			 {
+//				 Button2.click();
+////				 if(Button3.isDisplayed()&Button3.isSelected())
+////				 {
+////					Button3.click(); 
+////				 }
+//			 }
+//		}
+//		else
+//		{
+//			Button1.click();
+//			//WebElement Button2 = driver.findElement(By.xpath("//input[@id='cid1']"));
+//			 if(Button2.isSelected())
+//			 {
+//				 this.mergeaccnextbutton.click();
+//			 }
+			   // Radiobutton(Button2, "RadioButton");
+		//}
    // Radiobutton(Button1, "RadioButton");
    
     // Locate all checkboxes in a specific row and column
@@ -140,7 +194,7 @@ public void mergechkboxselect(WebDriver driver)
 public boolean verifymergestep2(WebDriver driver) throws FileNotFoundException, IOException
 {
 	String step2msg=this.mergeaccstep2.getText();
-	System.out.println(step2msg);
+	//System.out.println("step 2 msg"+step2msg);
 	String expectedmsg=ReadConfigFileutils.readfromcreateaccountpropertiesfile("merge.step2");
 	if(step2msg.equalsIgnoreCase(expectedmsg))
 	{
@@ -150,6 +204,152 @@ public boolean verifymergestep2(WebDriver driver) throws FileNotFoundException, 
 	return false;
 	
 }
+public boolean verifymergepopup(WebDriver driver) throws FileNotFoundException, IOException
+{
+	//String parentmerge=driver.getWindowHandle();
+	//System.out.println("parentMerge Window"+parentmerge);
+	driver.switchTo().alert().accept();
+	String oriaccpage=driver.getTitle();
+	String actualaccpage=ReadConfigFileutils.readfromcreateaccountpropertiesfile("accountpage.title");
+	if(oriaccpage.equalsIgnoreCase(actualaccpage))
+	{
+	return true;
+	}
+	return false;
+	
+}
+public boolean verifymergedisplay(WebDriver driver) throws FileNotFoundException, IOException
+{
+	//WebElement table=driver.findElement(By.xpath("//*[@id=\"bodyCell\"]/div[3]/div[1]/div/div[2]/table"));
+	//List <WebElement> rows=table.findElements(By.tagName("th")); 
+String orimergedname=this.mergedname.getText();
+//System.out.println("mergednamedisplayed"+orimergedname);
+String expecmergedname=ReadConfigFileutils.readfromcreateaccountpropertiesfile("mergeaccount.search");
+if(orimergedname.equalsIgnoreCase(expecmergedname))
+{
+	return true;
+}
+return false;
+}
+public boolean verifyunsavedreport(WebDriver driver) throws FileNotFoundException, IOException
+{
+	String oriunsavedrep=this.unsavedreport.getText();
+	System.out.println("unsaved report page"+oriunsavedrep);
+	String expunsavedrep=ReadConfigFileutils.readfromcreateaccountpropertiesfile("unsaved.report");
+	if(oriunsavedrep.equalsIgnoreCase(expunsavedrep))
+	{
+		return true;
+	}
+	return false;
+	
+}
+public void selectdate(WebDriver driver)
+{
+	this.createddate.click();
+	WebElement createddate = driver.findElement(By.xpath("//div[contains(text(),'Created Date')]"));
+	createddate.click();
+	//driver.findElement(By.xpath("//div[contains(text(),'Crea')]")).click();
+	//Select cdate=new Select(createddate);
+	//cdate.selectByVisibleText("Created Date");
+	LocalDate today = LocalDate.now();
+	System.out.println("today startdate"+today);
+	
+    String formattedDate = today.format(DateTimeFormatter.ofPattern("d"));
+    System.out.println("formatted date with Month"+formattedDate);
+	WebElement startdate =  driver.findElement(By.name("startDate"));
+	startdate.clear();
+	startdate.sendKeys(LocalDate.now().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
+	//startdate.sendKeys()
+	//startdate.sendKeys();
+	//enterText(startdate, "01/04/2019","calenderdata");
+	WebElement enddate = driver.findElement(By.name("endDate"));
+	enddate.clear();
+	enddate.sendKeys(LocalDate.now().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
+	//enterText(enddate, "03/04/2019", "calenderdata");
+	
+}
+public boolean verifyreportdisp(WebDriver driver) 
+{
+	WebElement table=driver.findElement(By.xpath("//div[@id=\"ext-gen253\"]"));
+	List <WebElement> rows=table.findElements(By.tagName("td"));
+	if (!rows.isEmpty()) {
+		
+        System.out.println("The table is populated with data. Number of rows: " + rows.size());
+        return true;
+	}
+	return false;
+}
+public void saveandrunreport(WebDriver driver) throws InterruptedException
+{
+	
+	String randomreportname = "Anu"+ new Random().nextInt(1000); // Random username
+    String randomreportunqname = new Random().nextInt(1000) + "example"; 
+	this.reportname.clear();
+	this.reportname.sendKeys(randomreportname);
+	this.reportunqname.clear();
+	this.reportunqname.sendKeys(randomreportunqname);
+	//String randomname=this.reportname.getText();
+	//@SuppressWarnings("unused")
+	 capturedUsername = this.reportname.getAttribute("value");
+	System.out.println("Captured Username: " + capturedUsername);
+   
+	WaitUtils.waitForElement(driver, this.saveandrunbutton);
+	Thread.sleep(2000);
+	//this.reportsavebutton.click();
+	JavascriptExecutor js = (JavascriptExecutor) driver;
+	//WebElement element = driver.findElement(By.id("element_id"));
+	js.executeScript("arguments[0].scrollIntoView(true);", this.saveandrunbutton);
+	this.saveandrunbutton.click();
+	 return;
+
+	//this.reportsavebutton.sendKeys(Keys.ENTER);
+}
+public boolean verifysavedreport(WebDriver driver) throws FileNotFoundException, IOException
+{
+	if (capturedUsername == null) {
+        System.out.println("Captured username is null. Ensure captureUsername() is executed before this method.");
+        return false;
+    }
+	String savedreportpage=driver.getTitle();
+	System.out.println("saved reports page"+savedreportpage);
+	WaitUtils.waitForElement(driver, this.reportpagename);
+	String reportname=this.reportpagename.getText();
+	System.out.println("ori name disp"+reportname);
+	//String randomname1=this.randomname;
+	//String 
+	System.out.println("reportpage name textbox"+SDFCCreateAccountPage.this.capturedUsername);
+	//String searchname=ReadConfigFileutils.readfromcreateaccountpropertiesfile("mergeaccount.search");
+	if(reportname.equalsIgnoreCase(SDFCCreateAccountPage.this.capturedUsername))
+	{
+		//System.out.println();
+		return true;
+	}
+	return false;
+	
+	
+}
+
+//	String orireportdetails=this.reportpagedisdetails.getText();
+//	String orireportstatus=this.reportpagestatus.getText();
+//	System.out.println("original report details"+orireportdetails+orireportstatus);
+//	String expectedreportdetails1=ReadConfigFileutils.readfromcreateaccountpropertiesfile("savedreport.detailspage1");
+//	String expectedreportdetails2=ReadConfigFileutils.readfromcreateaccountpropertiesfile("savedreport.detailspage2");
+//	if(orireportdetails.equalsIgnoreCase(expectedreportdetails1))
+//	{
+//	return true;	
+//	}
+//	else
+//	{
+//	if(orireportdetails.equalsIgnoreCase(expectedreportdetails2))
+//	{
+//		return true;
+//	}
+//	}
+	//return false;
+	
+
+
+
 public void viewnames(WebDriver driver)
 {
 	String randomUsername = "user"+ new Random().nextInt(1000); // Random username
@@ -217,3 +417,4 @@ public boolean verifyaccountviewlist(WebDriver driver) throws FileNotFoundExcept
 //
 
 }
+

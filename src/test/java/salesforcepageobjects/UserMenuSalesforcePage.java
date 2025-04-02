@@ -19,11 +19,12 @@ import salesforceutils.ReadConfigFileutils;
 import salesforceutils.WaitUtils;
 
 public class UserMenuSalesforcePage {
-	 String downloadPath = "C:\\Users\\anura_1ckmn7y\\Downloads";
-	WebDriver driver;
+	
+	//WebDriver driver;
 	public  UserMenuSalesforcePage(WebDriver driver) {
 		PageFactory.initElements(driver,this);
 	}
+	 String downloadPath = "C:\\Users\\anura_1ckmn7y\\Downloads";
 	
 	@FindBy(id="username")
 	public WebElement username;
@@ -42,7 +43,7 @@ public class UserMenuSalesforcePage {
 	public WebElement myprofile_edit;
 	@FindBy(id="aboutTab")
 	public WebElement abouttab;
-	@FindBy(id="lastName")
+	@FindBy(xpath="//input[@id=\"lastName\"]")
 	public WebElement abouttablastname;
 	@FindBy(xpath="//input[@onclick='javascript: validateAndSave();']")
 	public WebElement savelastname;
@@ -202,7 +203,7 @@ public class UserMenuSalesforcePage {
         for (WebElement option : selectappdrpdwn) {
         	System.out.println("Verifyreporttabadded");
             if (option.getText().contains(optionToCheck)) {
-            	
+            	isOptionPresent = true;
                return  true;
                 //break;
             }

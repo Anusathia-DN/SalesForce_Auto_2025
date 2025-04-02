@@ -3,16 +3,15 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="salesforcetestcases.SDFCCreateAccountTestcase">
+      <class name="salesforcetestcases.SalesForceUserMenuTestCase">
         <methods>
-          <include name="createnewview_TC11" invocation-numbers="0"/>
-          <include name="precond"/>
+          <include name="mysettingoption_TC07" invocation-numbers="0"/>
           <include name="SetUp"/>
-          <include name="tearDown"/>
           <include name="teardown"/>
-          <include name="postcond"/>
+          <include name="setupBrowser"/>
+          <include name="closeBrowser"/>
         </methods>
-      </class> <!-- salesforcetestcases.SDFCCreateAccountTestcase -->
+      </class> <!-- salesforcetestcases.SalesForceUserMenuTestCase -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

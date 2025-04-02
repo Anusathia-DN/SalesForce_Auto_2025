@@ -38,6 +38,34 @@ public class ReadConfigFileutils {
 		
 		
 	}
+	public static String readfromcreateoppurtunitypropertiesfile(String Key) throws FileNotFoundException, IOException {
+		Properties p=new Properties();
+		p.load(new FileReader(FileConstants.CreateOpp_Properties_File_Path));
+		return p.getProperty(Key);
+		
+		
+	}
+	public static String readfromleadspropertiesfile(String Key) throws FileNotFoundException, IOException {
+		Properties p=new Properties();
+		p.load(new FileReader(FileConstants.Leads_Properties_File_Path));
+		return p.getProperty(Key);
+		
+		
+	}
+	public static String readfromcontactpropertiesfile(String Key) throws FileNotFoundException, IOException {
+		Properties p=new Properties();
+		p.load(new FileReader(FileConstants.Contact_Properties_File_Path));
+		return p.getProperty(Key);
+		
+		
+	}
+	public static String readfromrandompropertiesfile(String Key) throws FileNotFoundException, IOException {
+		Properties p=new Properties();
+		p.load(new FileReader(FileConstants.Random_Properties_File_Path));
+		return p.getProperty(Key);
+		
+		
+	}
 //	public static String getApplicationURL()
 //	{
 //		Properties p=new Properties();
